@@ -14,4 +14,4 @@ def test_item():
     assert item1.apply_discount() == 8000  # Price discount test
     assert item2.apply_discount() == 16000  # Price discount test
 
-    assert Item.all == []
+    assert Item.all != []
