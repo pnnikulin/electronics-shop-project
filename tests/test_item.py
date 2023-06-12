@@ -15,3 +15,12 @@ def test_item():
     assert item2.apply_discount() == 16000  # Price discount test
 
     assert Item.all != []
+
+def test_string_to_number():
+    assert Item.string_to_number('5') == 5
+    assert Item.string_to_number('5.4') == 5
+    assert Item.string_to_number('5.5') == 5
+
+def test_instantiate_from_csv():
+    lists = Item.instantiate_from_csv()
+    assert type(lists) == list

@@ -1,5 +1,6 @@
 import csv
 
+
 class Item:
     """
     Класс для представления товара в магазине.
@@ -23,14 +24,34 @@ class Item:
 
     @property
     def name(self):
-        return self.name
+        return self.__name
 
 
     @name.setter
     def name(self, name):
-        self.name = name
-        if len(self.name) <= 10:
-            return True
+        if len(name) < 11:
+            self.__name = name
+        else:
+            print('Больше 10-ти символов')
+
+
+    @classmethod
+    def instantiate_from_csv(cls):
+        cls.all.clear()
+        with open('../src/items.csv', encoding='cp1251') as csvfile:
+            items_csv = csv.DictReader(csvfile)
+            items_csv_list = [cls(i['name'], i['price'], i['quantity']) for i in items_csv]
+            return items_csv_list
+
+
+    @staticmethod
+    def string_to_number(digit):
+        """статический метод для проверки числа"""
+        if '.' in digit:
+            return int(float(digit))
+        elif digit.isdigit():
+            return int(digit)
+
 
     def calculate_total_price(self) -> float:
         """
@@ -46,12 +67,3 @@ class Item:
         """
         self.price = self.price * self.pay_rate
         return self.price
-
-    @classmethod
-    def instantiate_from_csv(cls, items):
-        cls.items = items
-        with open("src/items.csv", "r", encoding='utf-8') as csvfile:
-            items_csv = csv.reader(csvfile)
-            return items_csv
-
-
