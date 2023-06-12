@@ -21,11 +21,15 @@ class Item:
         self.quantity = quantity
         self.all.append(self)
 
+    def __repr__(self):
+        return f"{self.__class__.__name__}('{self.name}', {self.price}, {self.quantity})"
+
+    def __str__(self):
+        return f"{self.__name}"
 
     @property
     def name(self):
         return self.__name
-
 
     @name.setter
     def name(self, name):
@@ -33,7 +37,6 @@ class Item:
             self.__name = name
         else:
             print('Больше 10-ти символов')
-
 
     @classmethod
     def instantiate_from_csv(cls):
@@ -43,7 +46,6 @@ class Item:
             items_csv_list = [cls(i['name'], i['price'], i['quantity']) for i in items_csv]
             return items_csv_list
 
-
     @staticmethod
     def string_to_number(digit):
         """статический метод для проверки числа"""
@@ -51,7 +53,6 @@ class Item:
             return int(float(digit))
         elif digit.isdigit():
             return int(digit)
-
 
     def calculate_total_price(self) -> float:
         """
