@@ -1,10 +1,14 @@
 """Здесь надо написать тесты с использованием pytest для модуля item."""
 
 from src.item import Item
+from src.phone import Phone
 
 
 item1 = Item("Смартфон", 10000, 20)
 item2 = Item('Ноутбук', 20000, 5)
+phone1 = Phone("Motorola", 70000, 10, 1)
+phone2 = Phone("iPhone", 100000, 15, 2)
+
 
 
 def test_item():
@@ -37,3 +41,9 @@ def test_repr():
 def test_str():
     assert item1.__str__() == 'Смартфон'
     assert item2.__str__() == 'Ноутбук'
+
+def test__add__():
+    assert item1 + phone1 == 30
+    assert item2 + phone1 == 15
+    assert item1 + phone2 == 35
+    assert phone1 + phone1 == 20
