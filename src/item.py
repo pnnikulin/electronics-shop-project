@@ -1,4 +1,10 @@
 import csv
+import os
+
+
+"""Создаём путь к файлу items.csv"""
+PATH = os.path.abspath('..')
+PATH_TO_FILE = os.path.join(PATH, 'src', 'items.csv')
 
 
 class Item:
@@ -27,7 +33,6 @@ class Item:
     def __str__(self):
         return f"{self.__name}"
 
-
     def __add__(self, other):
         return int(self.quantity) + int(other.quantity)
 
@@ -43,12 +48,17 @@ class Item:
             print('Больше 10-ти символов')
 
     @classmethod
-    def instantiate_from_csv(cls):
+    def instantiate_from_csv(cls, path_to_csv=PATH_TO_FILE):
         cls.all.clear()
-        with open('../src/items.csv', encoding='cp1251') as csvfile:
-            items_csv = csv.DictReader(csvfile)
-            items_csv_list = [cls(i['name'], i['price'], i['quantity']) for i in items_csv]
+        try:
+            with open(path_to_csv, encoding='cp1251') as csvfile:
+                items_csv = csv.DictReader(csvfile)
+                items_csv_list = [cls(i['name'], i['price'], i['quantity']) for i in items_csv]
             return items_csv_list
+        except FileNotFoundError:
+            raise FileNotFoundError(f'Отсутствует файл {path_to_csv}')
+        except KeyError:
+            raise InstantiateCSVError(f'Файл {path_to_csv} поврежден')
 
     @staticmethod
     def string_to_number(digit):
@@ -72,3 +82,17 @@ class Item:
         """
         self.price = self.price * self.pay_rate
         return self.price
+
+
+class InstantiateCSVError(Exception):
+    """Класс для вывода ошибки при повреждении файла"""
+
+    def __str__(self):
+        if self.args:
+            return f'{self.args[0]}'
+        return f'Файл поврежден'
+
+
+if __name__ == '__main__':
+    item = Item.instantiate_from_csv()
+    print(item)
